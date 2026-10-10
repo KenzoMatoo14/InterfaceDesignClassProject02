@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Controla todas las tarjetas y los contadores de arriba.
 public class QuestHeadsetManager : MonoBehaviour
@@ -16,9 +17,8 @@ public class QuestHeadsetManager : MonoBehaviour
     public TMP_Text chargingCount;
     public TMP_Text subtitleText;
 
-    [Header("Préstamo")]
-    [Tooltip("Minutos que se muestran al presionar Start")]
-    public float loanMinutes = 60f;
+    [Header("Reservación (si se deja vacío, se busca en la escena)")]
+    public ReservationPanel reservationPanel;
 
     [Header("Color del botón")]
     public Color buttonColor = new Color32(0xE8, 0xC4, 0xC8, 0xFF);
@@ -30,23 +30,29 @@ public class QuestHeadsetManager : MonoBehaviour
         foreach (HeadsetCard card in headsets)
         {
             card.FindReferences();
+            HeadsetCard captured = card;
+
+            // Toda la tarjeta funciona como botón
+            Button cardButton = card.GetComponent<Button>();
+            if (cardButton == null) cardButton = card.gameObject.AddComponent<Button>();
+            cardButton.targetGraphic = card.GetComponent<Image>();
+            cardButton.onClick.AddListener(() => OpenReservation(captured));
+
             if (card.actionButton != null)
-            {
-                HeadsetCard captured = card;
-                card.actionButton.onClick.AddListener(() => OnStartPressed(captured));
-            }
+                card.actionButton.onClick.AddListener(() => OpenReservation(captured));
         }
 
         RefreshAll();
     }
 
-    void OnStartPressed(HeadsetCard card)
+    void OpenReservation(HeadsetCard card)
     {
-        if (card.status != HeadsetStatus.Available) return;
-
-        card.SetStatus(HeadsetStatus.Loaned, loanMinutes);
-        Debug.Log($"{card.headsetName} prestado por {loanMinutes} min");
-        RefreshAll();
+        if (reservationPanel == null)
+        {
+            Debug.LogWarning("No hay ReservationPanel. Agrégale el componente a ReservePanel.", this);
+            return;
+        }
+        reservationPanel.Open(card);
     }
 
     public void RefreshAll()
@@ -103,6 +109,10 @@ public class QuestHeadsetManager : MonoBehaviour
             GameObject subtitle = GameObject.Find("Subtitle");
             if (subtitle != null) subtitleText = subtitle.GetComponent<TMP_Text>();
         }
+
+        // ReservePanel empieza desactivado, por eso se busca incluyendo inactivos
+        if (reservationPanel == null)
+            reservationPanel = FindFirstObjectByType<ReservationPanel>(FindObjectsInactive.Include);
 
         if (headsets.Count == 0)
             Debug.LogWarning("No se encontraron tarjetas. ¿Les agregaste el componente HeadsetCard?", this);
