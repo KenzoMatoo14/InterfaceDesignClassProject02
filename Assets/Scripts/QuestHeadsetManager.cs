@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // Controla todas las tarjetas y los contadores de arriba.
 public class QuestHeadsetManager : MonoBehaviour
@@ -19,6 +20,8 @@ public class QuestHeadsetManager : MonoBehaviour
 
     [Header("Reservación (si se deja vacío, se busca en la escena)")]
     public ReservationPanel reservationPanel;
+    [Header("Recomendation panel")]
+    public RecomendPage recomandationPanel;
 
     [Header("Color del botón")]
     public Color buttonColor = new Color32(0xE8, 0xC4, 0xC8, 0xFF);
@@ -36,6 +39,7 @@ public class QuestHeadsetManager : MonoBehaviour
             Button cardButton = card.GetComponent<Button>();
             if (cardButton == null) cardButton = card.gameObject.AddComponent<Button>();
             cardButton.targetGraphic = card.GetComponent<Image>();
+            
             cardButton.onClick.AddListener(() => OpenReservation(captured));
 
             if (card.actionButton != null)
@@ -61,6 +65,29 @@ public class QuestHeadsetManager : MonoBehaviour
             card.Refresh(buttonColor);
 
         UpdateCounters();
+
+        
+
+        foreach(HeadsetCard card in headsets){
+            Button cbutton = card.GetComponent<Button>();
+            if(card.status != HeadsetStatus.Available ){
+                ColorBlock colors = cbutton.colors;
+                //gets the disable button color
+                Color bye = colors.disabledColor;
+                colors.normalColor = bye;
+                colors.highlightedColor = bye;
+                colors.selectedColor = bye;
+                cbutton.colors = colors;
+                
+            }
+            else{
+                ColorBlock colors = cbutton.colors;
+                colors.normalColor = new Color(1,1,1,1);
+                colors.highlightedColor = new Color(0.96f, 0.96f, 0.96f, 1);
+                colors.selectedColor = new Color(0.96f, 0.96f, 0.96f, 1);
+                cbutton.colors = colors;
+            }
+        }
     }
 
     void UpdateCounters()
