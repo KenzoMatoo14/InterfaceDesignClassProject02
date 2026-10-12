@@ -68,6 +68,7 @@ public class HeadsetCard : MonoBehaviour
     public void SetStatus(HeadsetStatus newStatus, float minutes)
     {
         status = newStatus;
+        
         minutesRemaining = newStatus == HeadsetStatus.Available ? 0f : minutes;
     }
 
@@ -77,10 +78,19 @@ public class HeadsetCard : MonoBehaviour
         int minutesToShow = Mathf.CeilToInt(minutesRemaining);
         bool available = status == HeadsetStatus.Available;
 
+        string textmin;
+        if(minutesToShow >= 60){
+            int hour = minutesToShow / 60;
+            int minute = minutesToShow % 60;
+            textmin = $"{hour}h {minute:00}min";
+        }else{
+            textmin = $"{minutesToShow} min";
+        }
+
         if (nameText != null) nameText.text = headsetName;
         if (statusText != null) statusText.text = status.ToString();
         if (readyToUseText != null) readyToUseText.text = available ? "Ready to use" : "Ready to use in";
-        if (buttonText != null) buttonText.text = available ? "Start" : $"{minutesToShow} min";
+        if (buttonText != null) buttonText.text = available ? "Start" : textmin;
         if (buttonImage != null) buttonImage.color = buttonColor;
         if (actionButton != null) actionButton.interactable = available;
     }
