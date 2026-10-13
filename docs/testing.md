@@ -3,10 +3,10 @@
 ## 1. Tested Build
 
 * Application: Quest Checkout
-* Unity version: [Insert version]
+* Unity version: Unity 6.5 (6000.5.4f1)
 * Build or Release: [Insert exact identifier and link]
 * Commit or version tested: [Insert identifier]
-* Test date: [Insert date]
+* Test date: October 12 2026
 
 ## 2. Functional Testing
 
