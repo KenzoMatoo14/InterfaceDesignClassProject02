@@ -79,17 +79,22 @@ This design helps users identify which headsets they can select and reduces the 
 
 ## 5. Comparison Between Figma and Unity
 
-The original Figma design served as the visual and interaction reference for the Unity implementation.
+The original Figma design served as the visual and interaction reference for the Unity implementation. The main layout and visual style were maintained, while the Unity version includes functional elements needed to manage the headset inventory and handle different checkout scenarios.
 
-### Main Differences
+## Main Differences
 
-* [Describe the first actual difference.]
-* [Describe the second actual difference.]
-* [Describe any additional relevant differences.]
+**Functional headset status:** The Unity implementation displays six headset cards with their current statuses: available, reserved, loaned, or charging. It also includes a summary at the top showing the number of headsets in each category.
+**Interactive availability options:** The Unity version connects the headset cards to the checkout flow. The available headset displays a "Start" button, while unavailable headsets display their current status and relevant time information.
+**No-availability feedback:** The implementation includes a message that appears when no headsets are available. It presents alternative headsets, their loan status, estimated availability times, and a "Confirm selection" button to give users a possible next step.
 
 ### Reasons for the Changes
 
-[Explain why each meaningful change was necessary, referring to implementation requirements or usability testing evidence.]
+These changes support the functional requirements of the project and make the interface more useful beyond its initial visual design. Displaying the inventory summary and individual headset statuses helps users understand which devices can be borrowed without checking each one separately.
+
+Connecting the cards to the checkout flow helps prevent users from attempting to borrow unavailable headsets. The no-availability message also provides feedback when the user's original choice cannot be fulfilled and presents alternatives instead of leaving the user without a clear next step.
+
+These decisions support the HCI principles of visibility of system status, error prevention, and user control and freedom. The implementation must also be tested to verify that unavailable headsets cannot be selected incorrectly and that confirming an alternative works as intended.
+
 
 ## 6. Usability-Based Improvements
 
