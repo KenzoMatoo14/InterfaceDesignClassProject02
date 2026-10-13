@@ -33,6 +33,7 @@ public class QuestHeadsetManager : MonoBehaviour
         foreach (HeadsetCard card in headsets)
         {
             card.FindReferences();
+            card.InitBookings();
             HeadsetCard captured = card;
 
             // The whole card works as a button
