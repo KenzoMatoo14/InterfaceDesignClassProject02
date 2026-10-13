@@ -28,23 +28,40 @@ No additional AI use. All AI assistance for my part of the project is summarized
 
 ### Team Member 2
 
-**Name:** Alberto Stephen Dubin Hernández
-**Main contribution:** [PENDING – describe your main responsibility in the project]
+**Name:** Alberto Stephen Dubin Hernández 
+**Main contribution:** I was in charge of the case B, I created a new canvas panel to add the parts that are specific to that case. I implemented the system of comparison between all the cards and pulling the main 2 with the shortest availability time, we implemented that because of the question, what if I need it as soon as possible? and I implemented the format of time on hours and minutes instead of just minutes.
 
 #### AI Use Record 1
 
-* **AI tool:** [PENDING – ChatGPT, GitHub Copilot, Claude, etc.]
-* **Date used:** [PENDING – YYYY-MM-DD]
-* **Purpose:** [PENDING – What were you trying to accomplish?]
-* **Prompt or request:** [PENDING – Copy the prompt or summarize what you asked the tool]
-* **AI response used:** [PENDING – Describe the code, explanation, suggestion, or other output you used]
-* **Changes made:** [PENDING – Explain what you modified or adapted before using the result]
-* **Verification:** [PENDING – Explain how you checked that the result worked correctly]
-* **Related project files or work:** [PENDING – File names, scripts, scenes, documentation, or other relevant work]
+* **AI tool:** Claude Sonnet 5.5
+* **Date used:** 2026-10-12
+* **Purpose:** Documentation and teammate code understanding.
+* **Prompt or request:** I asked the AI to not give me the code because I wanted to code, but if I asked a question give me a documentation style answer, and if I asked something with my code to give me a answer with an example that has no relation to my code. Only thing that I was allowed to ask the AI for code was when I had errors on syntax and I couldn't found why.
+* **AI response used:**  This is literally a response I used to upgrade the code. 
+Here’s the approach, using your own code as the map.
+
+1. Detect the scene number
+
+Unity’s SceneManager (namespace UnityEngine.SceneManagement, the same one SceneChange.cs already imports) gives you the active scene. From it you read buildIndex (the number) or name.
+
+Generic example, unrelated to your project:
+
+csharp
+int index = SceneManager.GetActiveScene().buildIndex;
+if (index == 2) { /* shop behavior */ } else { /* default behavior */ }
+
+Two things to check:
+
+The index comes from File > Build Settings > Scenes In Build. Your SceneChange already uses LoadScene(1) and LoadScene(2), so make sure the new scene is actually listed there at the position you expect. If it isn’t in the list, the index is -1.
+Read it once, in Start() of QuestHeadsetManager, and store it in a field instead of calling it on every click.
+
+* **Changes made:** Basically, I started to do trial and error. I tried to implement the stuff without help, then if I couldn't I asked Claude as you saw before. Then I tried to implement the changes and check if it worked, I gave it another go until it worked. (I did this mainly to understand more deeply what I was doing.) 
+* **Verification:** I started the typical user flow and if the thing that I wanted happened on a scientific completion (aka repeating it a bunch of times) and if the result didn't change, I was satisfied with the results, also each try I prioritized changing something, and two big changes I asked my little brother to reserve a Quest and if nothing happened I consider it done. 
+* **Related project files or work:** I created 2 scripts, RecomendPage and SceneChange, also I modified QuestHeadsetManager. I created the full scene of case B, also implemented with the Figma reference the recommendation panel, I tried my best to document my code. I gave the instructions that made my brother discover the bug. 
 
 #### Additional AI Use
 
-[PENDING – Add another AI Use Record for each significant use of AI. If you did not use AI, explicitly state that.]
+I only used Claude for relevant stuff.
 
 
 ### Team Member 3
