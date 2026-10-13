@@ -21,7 +21,7 @@ The app manages six Quest 3 kits (Quest3 01 – Quest3 06), blocks unavailable k
 
 * **Kenzo Matoo López:** Implementation of the Quest Headset Manager interface in Unity (UI screens, headset statuses, reservation timeline, confirmation ticket and interaction logic).
 * **Fátima Sofía Walls Fernández:** Project documentation: README, design justification, testing documentation, video organization, AI use declaration and coordination of the documentation deliverables.
-* **Alberto Stephen Dubin Hernández:** FALTANTE
+* **Alberto Stephen Dubin Hernández:** In charge of the implementation of case B.
 
 ## Figma Design
 
@@ -129,4 +129,4 @@ Loans and inventory are saved automatically when a loan is confirmed and are **k
 
 ## Demo Video
 
-[Link to the demo video]
+https://drive.google.com/file/d/1Yja-jX6_ivNjSjtjjfMa3rHr7J22vVLG/view
