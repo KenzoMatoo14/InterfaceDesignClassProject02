@@ -35,6 +35,8 @@ public class HeadsetCard : MonoBehaviour
     {
         public DateTime start;
         public DateTime end;
+        // Status the headset has while this booking is active (Reserved, Loaned or Charging)
+        public HeadsetStatus status;
     }
 
     // Times booked for this headset (the ones shown in red on the timeline)
@@ -94,13 +96,51 @@ public class HeadsetCard : MonoBehaviour
         if (status != HeadsetStatus.Available)
         {
             DateTime now = DateTime.Now;
-            AddBooking(now, now.AddMinutes(Mathf.Max(1f, minutesRemaining)));
+            AddBooking(now, now.AddMinutes(Mathf.Max(1f, minutesRemaining)), status);
         }
     }
 
-    public void AddBooking(DateTime start, DateTime end)
+    public void AddBooking(DateTime start, DateTime end, HeadsetStatus bookingStatus = HeadsetStatus.Reserved)
     {
-        bookings.Add(new Booking { start = start, end = end });
+        bookings.Add(new Booking { start = start, end = end, status = bookingStatus });
+    }
+
+    // The card shows what's happening NOW: if a booking is active (or starts within
+    // leadMinutes), its status and the minutes until the headset is free (joining
+    // back-to-back bookings); otherwise Available.
+    // Bookings further in the future don't change the card, they only show in red on the timeline.
+    public void UpdateFromBookings(float leadMinutes = 60f)
+    {
+        DateTime now = DateTime.Now;
+        DateTime soon = now.AddMinutes(leadMinutes);
+        Booking? active = null;
+        foreach (Booking booking in bookings)
+        {
+            if (booking.start > soon || booking.end <= now) continue;
+            // If several match, keep the one that starts first
+            if (!active.HasValue || booking.start < active.Value.start) active = booking;
+        }
+
+        if (!active.HasValue)
+        {
+            SetStatus(HeadsetStatus.Available, 0f);
+            return;
+        }
+
+        // If another booking starts right when this one ends, it's still not free
+        DateTime freeAt = active.Value.end;
+        bool extended = true;
+        while (extended)
+        {
+            extended = false;
+            foreach (Booking booking in bookings)
+                if (booking.start <= freeAt && booking.end > freeAt) { freeAt = booking.end; extended = true; }
+        }
+
+        HeadsetStatus activeStatus = active.Value.status == HeadsetStatus.Available
+            ? HeadsetStatus.Reserved
+            : active.Value.status;
+        SetStatus(activeStatus, (float)(freeAt - now).TotalMinutes);
     }
 
     public bool IsBooked(DateTime slotStart, DateTime slotEnd)

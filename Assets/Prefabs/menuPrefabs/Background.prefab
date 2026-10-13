@@ -318,6 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c61b331b94ced4409cc5c3dc278b4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadsetCard
+  original: {fileID: 0}
   headsetName: Quest3 02
   status: 1
   minutesRemaining: 90
@@ -3887,6 +3888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c61b331b94ced4409cc5c3dc278b4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadsetCard
+  original: {fileID: 0}
   headsetName: Quest3 04
   status: 1
   minutesRemaining: 30
@@ -4896,6 +4898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c61b331b94ced4409cc5c3dc278b4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadsetCard
+  original: {fileID: 0}
   headsetName: Quest3 03
   status: 1
   minutesRemaining: 35
@@ -5387,6 +5390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c61b331b94ced4409cc5c3dc278b4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadsetCard
+  original: {fileID: 0}
   headsetName: Quest3 05
   status: 2
   minutesRemaining: 55
@@ -6063,6 +6067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c61b331b94ced4409cc5c3dc278b4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadsetCard
+  original: {fileID: 0}
   headsetName: Quest3 01
   status: 0
   minutesRemaining: 0
@@ -7303,9 +7308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c61b331b94ced4409cc5c3dc278b4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadsetCard
+  original: {fileID: 0}
   headsetName: Quest3 06
   status: 3
-  minutesRemaining: 0
+  minutesRemaining: 15
   nameText: {fileID: 2043891462569708355}
   statusText: {fileID: 941788427216175356}
   readyToUseText: {fileID: 2238610543207994379}

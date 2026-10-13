@@ -26,6 +26,10 @@ public class QuestHeadsetManager : MonoBehaviour
     [Header("Button color")]
     public Color buttonColor = new Color32(0xE8, 0xC4, 0xC8, 0xFF);
 
+    [Header("Reservations")]
+    [Tooltip("A headset shows as Reserved if one of its reservations starts within these minutes")]
+    public float reservedLeadMinutes = 60f;
+
     void Start()
     {
         FindReferences();
@@ -94,7 +98,11 @@ public class QuestHeadsetManager : MonoBehaviour
     public void RefreshAll()
     {
         foreach (HeadsetCard card in headsets)
+        {
+            // Status and minutes come from the booking active right now
+            card.UpdateFromBookings(reservedLeadMinutes);
             card.Refresh(buttonColor);
+        }
 
         UpdateCounters();
 

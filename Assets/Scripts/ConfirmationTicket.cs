@@ -111,17 +111,16 @@ public class ConfirmationTicket : MonoBehaviour
     {
         if (reservedHeadset != null)
         {
-            float minutes = (float)(returnBy - DateTime.Now).TotalMinutes;
-            float finalMinutes = Mathf.Max(1f, minutes);
+            // Only the selected block (pick up -> return) is booked, on the real headset.
+            // The card only changes to Reserved if that block is happening now
+            HeadsetCard source = reservedHeadset.Source;
+            source.AddBooking(pickUpTime, returnBy, HeadsetStatus.Reserved);
+            if (headsetManager != null) source.UpdateFromBookings(headsetManager.reservedLeadMinutes);
+            else source.UpdateFromBookings();
 
-            reservedHeadset.SetStatus(HeadsetStatus.Reserved, finalMinutes);
-
-
-            if (reservedHeadset.original != null)
-                reservedHeadset.original.SetStatus(HeadsetStatus.Reserved, finalMinutes);
-
-            // Only the selected block (pick up -> return) is booked, on the real headset
-            reservedHeadset.Source.AddBooking(pickUpTime, returnBy);
+            // If it was a copy from the recommendation panel, show the same as the original
+            if (reservedHeadset != source)
+                reservedHeadset.SetStatus(source.status, source.minutesRemaining);
 
             reservedHeadset = null;
         }
