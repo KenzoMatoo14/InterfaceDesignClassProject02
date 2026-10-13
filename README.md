@@ -18,21 +18,33 @@ https://www.figma.com/design/5yRzIzVPcyZezECFmFmCy6/Project1_Wireframe?node-id=0
 
 ## Requirements
 
-* Unity version: [Version]
-* Operating system: [Supported operating system]
+* Unity version: Unity 6.5 (6000.5.4f1)
+* Operating system: Windows
 
 ## Getting Started
 
 1. Clone this repository.
 2. Open the project using the specified Unity version.
-3. Open the main scene: [Scene name].
+3. Open the main scene: MainScene
 4. Run the application from the Unity Editor.
 
 ## Download and Run the Build
 
 Download the runnable build from the [GitHub Release](REPLACE_WITH_RELEASE_URL).
 
-[Add operating-system-specific instructions for running the build.]
+## Running the Build on Windows
+Download the Windows build from the project's GitHub Release.
+Extract the downloaded ZIP file to a folder on your computer.
+Open the extracted folder.
+Double-click the game's .exe file to launch Quest Checkout.
+Follow the on-screen instructions to interact with the application.
+Use the available scenario controls to test Scenario A and Scenario B, and reset the application state when needed.
+
+Note: If Windows displays a security warning, verify that the executable was downloaded from the team's official GitHub repository before deciding whether to run it.
+
+Requirements: A Windows computer compatible with the build.
+
+Troubleshooting: If the application does not launch, make sure the ZIP file was fully extracted and try running the executable again from the extracted folder.
 
 ## Controls and Usage
 
