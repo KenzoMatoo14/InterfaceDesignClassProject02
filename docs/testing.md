@@ -159,9 +159,6 @@ Three participants outside the team attempted Scenario A and Scenario B without 
   * **#2 (Scenario A):** struggled to select the desired time for the reservation on the timeline.
   * **#1 (Scenario B):** expected the system to suggest the next available headset automatically.
   * **#3 (Scenario B):** was unsure how to proceed after learning that no headsets were available.
- 
-<img width="1161" height="162" alt="EXTERNAL USABILITY TEST" src="https://github.com/user-attachments/assets/119137d0-7dfd-404a-bf5b-19ce4685452d" />
-
 
 ## 4. Usability Problem 1
 
