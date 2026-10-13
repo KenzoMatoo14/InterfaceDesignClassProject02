@@ -14,11 +14,17 @@ Users need to identify which kits are available before attempting to borrow one.
 
 ### HCI Principle
 
-[Insert the HCI principle that best describes the implemented design.]
+Visibility of System Status
+
+The interface follows the principle of visibility of system status by showing the current status of each Quest headset. Users can quickly see which headsets are available, reserved, loaned, or charging before making a selection.
 
 ### Design Solution
 
-[Explain how the interface communicates each kit's availability and how users can distinguish available kits from unavailable ones.]
+The interface displays six Quest headsets in a two-column grid. Each card includes the headset name, its current status, an image, and information about its availability. The summary at the top also shows the total number of headsets in each status category.
+
+Available headsets are visually distinguished from unavailable ones. In the current implementation, Quest3 01 is marked as "Available" and has a pink "Start" button, while reserved, loaned, and charging headsets have gray cards and display their respective statuses. Reserved headsets also show the remaining time information.
+
+This design helps users understand the current inventory at a glance and reduces the chance of selecting a headset that cannot be borrowed. By presenting the status information directly on each card, users do not need to open every headset individually to check whether it is available.
 
 ### Evidence
 
