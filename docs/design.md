@@ -53,23 +53,29 @@ This design helps users understand why they cannot continue with their original 
 <img width="515" height="688" alt="Screenshot 2026-10-12 at 7 07 55 PM" src="https://github.com/user-attachments/assets/6ad02a01-24ac-4dbe-9587-1d118ac23289" />
 
 
-## 4. Interaction Decision 3: No Kits Available
+## 4. Interaction Decision 3: Preventing Invalid Kit Selection
 
 ### User Problem
 
-When no kits are available, users need to understand why they cannot continue and what they can do next.
+Users may accidentally try to borrow a headset that is already reserved, loaned, or charging. If the interface does not clearly distinguish these headsets from available ones, users may become confused or attempt to complete a loan that cannot be fulfilled.
 
 ### HCI Principle
 
-[Insert the HCI principle that best describes the implemented design.]
+**Error Prevention**
+
+This principle focuses on designing the interface to prevent problems before they happen, rather than only informing users after an error occurs.
 
 ### Design Solution
 
-[Explain how the application communicates the lack of availability and provides a functional next step.]
+The interface displays each of the six Quest headsets in an individual card with its name and current status. Available headsets are visually distinguished from reserved, loaned, and charging headsets. In the current Unity implementation, the available headset has a pink "Start" button, while the other headsets display their respective statuses on gray cards.
+
+This design helps users identify which headsets they can select and reduces the likelihood of attempting to borrow an unavailable device. The status labels and visual differences make the available options easier to recognize before starting the checkout process.
 
 ### Evidence
 
-[Insert a screenshot of the actual no-availability scenario.]
+<img width="413" height="555" alt="Evidence" src="https://github.com/user-attachments/assets/292fbcda-9107-4d31-9131-147ce7dc939b" />
+
+
 
 ## 5. Comparison Between Figma and Unity
 
