@@ -20,6 +20,9 @@ public class RecomendPage : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (headsetManager == null)
+            headsetManager = FindFirstObjectByType<QuestHeadsetManager>();
+
         foreach(HeadsetCard card in headsets){
             card.FindReferences();
             HeadsetCard captured = card;
@@ -34,10 +37,31 @@ public class RecomendPage : MonoBehaviour
                 card.actionButton.onClick.AddListener(() => OpenReservation(captured));
         }
 
+    }
+
+    void OnEnable(){
+        if (headsetManager == null)
+            headsetManager = FindFirstObjectByType<QuestHeadsetManager>();
+
+        if (headsetManager != null)
+            winnerBestToEnd();
+    }
+
+    public void Close()
+    {
+        if (headsetManager != null && headsetManager.headsetContainer != null)
+            headsetManager.headsetContainer.gameObject.SetActive(true);
+
+        gameObject.SetActive(false);
+    }
+
+    //a void funtion that takes the nearest to completion on the reserbation time and updates the canvas so it shows all the info it needs
+    void winnerBestToEnd(){
+        //variable to save the 2 bests cards
         HeadsetCard best1 = null;
         HeadsetCard best2 = null;
 
-
+        //serches for each previous card the two nereast to compleation and saves it on best1 and best 2
         foreach(HeadsetCard pastCard in headsetManager.headsets){
             if(best1 == null || best1.minutesRemaining >=pastCard.minutesRemaining){
                 best2 = best1;
@@ -47,12 +71,18 @@ public class RecomendPage : MonoBehaviour
             }
             
         }
+        //the list saves best 1 and best 2 for easy acces to each viarable
+        List<HeadsetCard> bestOfBest = new List<HeadsetCard>();
+        bestOfBest.Add(best1);
+        bestOfBest.Add(best2);
+        //paste the information acording to the 2 new cards and the 2 best from the other panel
+        for(int i = 0; i<headsets.Count; i++){
+            headsets[i].SetStatus(bestOfBest[i].status, bestOfBest[i].minutesRemaining);
+            headsets[i].headsetName = bestOfBest[i].headsetName;
+            headsets[i].Refresh(buttonColor);
+            headsets[i].original = bestOfBest[i];
+        }
 
-        if (headsetManager == null)
-            headsetManager = FindFirstObjectByType<QuestHeadsetManager>();
-
-
-        
     }
 
     void OpenReservation(HeadsetCard card)
@@ -65,9 +95,5 @@ public class RecomendPage : MonoBehaviour
         reservationPanel.Open(card);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

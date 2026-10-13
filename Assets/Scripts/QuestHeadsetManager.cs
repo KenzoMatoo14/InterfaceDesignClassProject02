@@ -39,11 +39,12 @@ public class QuestHeadsetManager : MonoBehaviour
             Button cardButton = card.GetComponent<Button>();
             if (cardButton == null) cardButton = card.gameObject.AddComponent<Button>();
             cardButton.targetGraphic = card.GetComponent<Image>();
-            
-            cardButton.onClick.AddListener(() => OpenReservation(captured));
 
+            cardButton.onClick.AddListener(() => OpenReservationOrRecomend(captured));
             if (card.actionButton != null)
-                card.actionButton.onClick.AddListener(() => OpenReservation(captured));
+                card.actionButton.onClick.AddListener(() => OpenReservationOrRecomend(captured));
+            
+            
         }
 
         RefreshAll();
@@ -58,6 +59,29 @@ public class QuestHeadsetManager : MonoBehaviour
         }
         reservationPanel.Open(card);
     }
+    public void OpenRecomended()
+    {
+        if (recomandationPanel == null)
+        {
+            Debug.LogWarning("No hay RecomendPage asignado.", this);
+            return;
+        }
+
+        if (headsetContainer != null)
+            headsetContainer.gameObject.SetActive(false);
+
+        recomandationPanel.gameObject.SetActive(true);
+    }
+
+    void OpenReservationOrRecomend(HeadsetCard card)
+    {
+        if (SceneManager.GetActiveScene().name == "CaseB")
+            OpenRecomended();
+        else
+            OpenReservation(card);
+    }
+
+    
 
     public void RefreshAll()
     {
@@ -117,6 +141,8 @@ public class QuestHeadsetManager : MonoBehaviour
 
     void FindReferences()
     {
+        if (recomandationPanel == null && SceneManager.GetActiveScene().name == "CaseB")
+            recomandationPanel = FindFirstObjectByType<RecomendPage>(FindObjectsInactive.Include);
         if (headsetContainer == null)
         {
             GameObject lowerPanel = GameObject.Find("LowerPanel");

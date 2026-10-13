@@ -90,13 +90,18 @@ public class ConfirmationTicket : MonoBehaviour
     }
 
     // X del ticket o del panel de email: aparta el visor y regresa a la pantalla inicial
-    void FinishAndGoHome()
-    {
+    void FinishAndGoHome(){
         if (reservedHeadset != null)
         {
-            // "Ready to use in" = minutos que faltan para que lo devuelvan
             float minutes = (float)(returnBy - DateTime.Now).TotalMinutes;
-            reservedHeadset.SetStatus(HeadsetStatus.Reserved, Mathf.Max(1f, minutes));
+            float finalMinutes = Mathf.Max(1f, minutes);
+
+            reservedHeadset.SetStatus(HeadsetStatus.Reserved, finalMinutes);
+
+            
+            if (reservedHeadset.original != null)
+                reservedHeadset.original.SetStatus(HeadsetStatus.Reserved, finalMinutes);
+
             reservedHeadset = null;
         }
 
@@ -104,6 +109,10 @@ public class ConfirmationTicket : MonoBehaviour
 
         if (sendToEmailPanel != null) sendToEmailPanel.SetActive(false);
         gameObject.SetActive(false);
+
+
+        RecomendPage recomend = FindFirstObjectByType<RecomendPage>();
+        if (recomend != null) recomend.Close();
     }
 
     // "6:00 pm today", "7:30 pm tomorrow", "9:00 am Mon 12"

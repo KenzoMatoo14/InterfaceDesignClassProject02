@@ -13,6 +13,7 @@ public enum HeadsetStatus
 // Va en cada tarjeta (Headset1..Headset6). Guarda el estado del visor y actualiza sus textos.
 public class HeadsetCard : MonoBehaviour
 {
+    [HideInInspector] public HeadsetCard original;
     [Header("Estado inicial")]
     [Tooltip("Si se deja vacío, usa el texto que ya tiene QuestName")]
     public string headsetName = "";
