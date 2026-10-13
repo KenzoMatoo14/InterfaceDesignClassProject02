@@ -4,10 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Va en ReservePanel. Muestra los datos del Quest3 que se eligió.
+// Goes on ReservePanel. Shows the data of the selected Quest3.
 public class ReservationPanel : MonoBehaviour
 {
-    [Header("Referencias (se llenan solas si se dejan vacías)")]
+    [Header("References (filled automatically if left empty)")]
     public TMP_Text deviceText;
     public TMP_Text statusText;
     public Image questImage;
@@ -16,10 +16,10 @@ public class ReservationPanel : MonoBehaviour
     public ReservationTimeline timeline;
     public ConfirmationTicket confirmationTicket;
 
-    [Header("Textos")]
+    [Header("Texts")]
     public string deviceModel = "Oculus Quest 3";
 
-    [Tooltip("Cada visor usa una semilla distinta para que su ocupación sea diferente")]
+    [Tooltip("Each headset uses a different seed so its occupancy is different")]
     public int baseSeed = 1234;
 
     public HeadsetCard CurrentHeadset { get; private set; }
@@ -37,14 +37,14 @@ public class ReservationPanel : MonoBehaviour
         if (closeButton == null) closeButton = FindChild<Button>("UpperPanel/LeftPanel/XButton");
         if (confirmButton == null) confirmButton = FindChild<Button>("ButtonPanel/Confirm");
         if (timeline == null) timeline = GetComponentInChildren<ReservationTimeline>(true);
-        // ConfirmationTicket empieza desactivado, por eso se busca incluyendo inactivos
+        // ConfirmationTicket starts disabled, so the search includes inactive objects
         if (confirmationTicket == null)
             confirmationTicket = FindFirstObjectByType<ConfirmationTicket>(FindObjectsInactive.Include);
 
         if (closeButton != null) closeButton.onClick.AddListener(Close);
         if (confirmButton != null) confirmButton.onClick.AddListener(Confirm);
 
-        // Confirm solo se puede presionar cuando hay una hora elegida
+        // Confirm can only be pressed when a time is selected
         if (timeline != null)
             timeline.OnSelectionChanged += () => SetConfirmEnabled(timeline.SelectedSlot.HasValue);
     }
@@ -58,7 +58,7 @@ public class ReservationPanel : MonoBehaviour
     {
         if (timeline == null || !timeline.SelectedSlot.HasValue)
         {
-            Debug.LogWarning("Elige una hora antes de confirmar.", this);
+            Debug.LogWarning("Select a time before confirming.", this);
             return;
         }
 
@@ -67,11 +67,11 @@ public class ReservationPanel : MonoBehaviour
 
         if (confirmationTicket == null)
         {
-            Debug.LogWarning("No hay ConfirmationTicket. Agrégale el componente al objeto ConfirmationTicket.", this);
+            Debug.LogWarning("No ConfirmationTicket found. Add the component to the ConfirmationTicket object.", this);
             return;
         }
 
-        HeadsetCard headset = CurrentHeadset; // Close() lo borra
+        HeadsetCard headset = CurrentHeadset; // Close() clears it
         Close();
         confirmationTicket.Show(headset, pickUp, returnBy);
     }
@@ -81,7 +81,7 @@ public class ReservationPanel : MonoBehaviour
         Transform child = transform.Find(path);
         if (child == null)
         {
-            Debug.LogWarning($"[{name}] No se encontró el hijo '{path}'", this);
+            Debug.LogWarning($"[{name}] Child '{path}' not found", this);
             return null;
         }
         return child.GetComponent<T>();
@@ -97,20 +97,23 @@ public class ReservationPanel : MonoBehaviour
         if (deviceText != null) deviceText.text = $"DEVICE {number}: {deviceModel}";
         if (statusText != null) statusText.text = $"STATUS: {card.status.ToString().ToUpper()}";
 
-        // Usa la misma imagen que tiene la tarjeta
+        // Uses the same image as the card
         Image cardImage = card.transform.Find("QuestImage")?.GetComponent<Image>();
         if (questImage != null && cardImage != null) questImage.sprite = cardImage.sprite;
 
         if (timeline != null)
         {
-            timeline.randomSeed = baseSeed + number * 7919;
+            // When entering from MainMenu, the seed comes from there (same in CaseA and CaseB)
+            int seed = HeadsetSession.Instance != null ? HeadsetSession.Instance.randomSeed : baseSeed;
+            timeline.randomSeed = seed + number * 7919;
 
-            timeline.headset = card;
+            // If it's a copy from the recommendation panel, use the original headset's times
+            timeline.headset = card.Source;
 
             timeline.Build();
         }
 
-        // Al abrir todavía no hay hora elegida
+        // Nothing is selected yet when opening
         SetConfirmEnabled(false);
     }
 
@@ -120,7 +123,7 @@ public class ReservationPanel : MonoBehaviour
         CurrentHeadset = null;
     }
 
-    // "Quest3 01" -> 1. Si el nombre no termina en número, usa el del objeto (Headset1 -> 1)
+    // "Quest3 01" -> 1. If the name doesn't end in a number, uses the object's (Headset1 -> 1)
     static int GetDeviceNumber(HeadsetCard card)
     {
         Match match = Regex.Match(card.headsetName ?? "", @"(\d+)\s*$");
