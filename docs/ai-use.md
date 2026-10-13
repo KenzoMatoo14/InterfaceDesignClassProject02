@@ -61,7 +61,7 @@ Read it once, in Start() of QuestHeadsetManager, and store it in a field instead
 
 #### Additional AI Use
 
-I only used Claude for relevant stuff.
+No additional AI use. All AI assistance for my part of the project is summarized in AI Use Record 1.
 
 
 ### Team Member 3
