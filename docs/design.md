@@ -22,7 +22,7 @@ Users need to identify which kits are available before attempting to borrow one.
 
 ### Evidence
 
-[Insert a screenshot of the actual Figma or Unity interface.]
+<img width="1081" height="660" alt="Interface" src="https://github.com/user-attachments/assets/70c77e77-729a-473e-8405-d5c003b7db36" />
 
 ## 3. Interaction Decision 2: Reviewing and Editing Choices
 
