@@ -9,20 +9,20 @@ using UnityEngine.UI;
 [Serializable]
 public class TimelineReservation
 {
-    [Tooltip("Días a partir de hoy (0 = hoy, 1 = mañana...)")]
+    [Tooltip("Days from today (0 = today, 1 = tomorrow...)")]
     public int dayOffset = 0;
-    [Tooltip("Hora de inicio, formato HH:mm")]
+    [Tooltip("Start time, HH:mm format")]
     public string startTime = "09:00";
     public int durationMinutes = 60;
 }
 
-// Genera la tabla de días x horas empezando en la hora actual.
+// Builds the days x hours grid, scrolled to the current time.
 public class ReservationTimeline : MonoBehaviour
 {
-    [Header("Contenedores")]
-    [Tooltip("Columna fija de la izquierda donde van los días")]
+    [Header("Containers")]
+    [Tooltip("Fixed left column where the days go")]
     public RectTransform dayColumn;
-    [Tooltip("Content del ScrollRect, donde van las horas y las celdas")]
+    [Tooltip("ScrollRect Content, where the hours and cells go")]
     public RectTransform gridContent;
 
     [Header("Prefabs")]
@@ -30,58 +30,58 @@ public class ReservationTimeline : MonoBehaviour
     public TMP_Text hourLabelPrefab;
     public TMP_Text dayLabelPrefab;
 
-    [Header("Rango")]
+    [Header("Range")]
     public int daysToShow = 5;
     public bool skipWeekends = true;
     public int slotMinutes = 30;
-    [Tooltip("Primera columna (0 = medianoche)")]
+    [Tooltip("First column (0 = midnight)")]
     public int openHour = 6;
-    [Tooltip("Hora a la que cierra (24 = medianoche)")]
+    [Tooltip("Closing time (24 = midnight)")]
     public int closeHour = 20;
-    [Tooltip("Al iniciar, mueve el scroll para que la hora actual quede a la izquierda")]
+    [Tooltip("On start, scrolls so the current time is on the left")]
     public bool scrollToCurrentTime = true;
 
-    [Header("Tamaños")]
+    [Header("Sizes")]
     public Vector2 cellSize = new Vector2(45, 35);
     public float headerHeight = 25;
     public float dayColumnWidth = 70;
     public float spacing = 2;
 
-    [Header("Ajuste automático")]
-    [Tooltip("Celdas cuadradas que llenan el alto del Viewport. Encabezados y textos se escalan con ellas")]
+    [Header("Auto fit")]
+    [Tooltip("Square cells that fill the Viewport height. Headers and text scale with them")]
     public bool fitToHeight = true;
-    [Tooltip("Alto de la fila de horas, relativo al tamaño de la celda")]
+    [Tooltip("Height of the hours row, relative to the cell size")]
     public float headerRatio = 0.6f;
-    [Tooltip("Ancho de la columna de días, relativo al tamaño de la celda")]
+    [Tooltip("Width of the days column, relative to the cell size")]
     public float dayColumnRatio = 1.8f;
-    [Tooltip("Tamaño de letra de las horas, relativo al tamaño de la celda")]
+    [Tooltip("Font size of the hours, relative to the cell size")]
     public float hourFontRatio = 0.32f;
-    [Tooltip("Tamaño de letra de los días, relativo al tamaño de la celda")]
+    [Tooltip("Font size of the days, relative to the cell size")]
     public float dayFontRatio = 0.36f;
 
-    [Header("Colores")]
+    [Header("Colors")]
     public Color freeColor = new Color32(0xEC, 0xEC, 0xEE, 0xFF);
     public Color occupiedColor = new Color32(0xF0, 0x66, 0x66, 0xFF);
     public Color selectedColor = new Color32(0x6F, 0xB7, 0xF2, 0xFF);
-    [Header("Ocupación")]
+    [Header("Occupancy")]
     public List<TimelineReservation> reservations = new List<TimelineReservation>();
-    [Tooltip("Rellena celdas ocupadas al azar para probar el diseño")]
+    [Tooltip("Fills random occupied cells to test the design")]
     public bool randomDemoData = true;
     [Range(0f, 1f)] public float randomOccupiedChance = 0.2f;
     public int randomSeed = 1234;
 
-    // Hasta cuándo está ocupado el visor actual (null = libre). Lo pone ReservationPanel.
-    [NonSerialized] public DateTime? busyUntil;
+    // Headset being shown; its booked times appear in red. Set by ReservationPanel.
+    [NonSerialized] public HeadsetCard headset;
 
-    [Header("Selección")]
-    [Tooltip("Máximo de casillas seguidas que se pueden elegir (3 x 30 min = 90 min)")]
+    [Header("Selection")]
+    [Tooltip("Maximum number of consecutive slots that can be selected (3 x 30 min = 90 min)")]
     public int maxSelectedSlots = 3;
 
     public event Action OnSelectionChanged;
-    // Inicio de la selección (null = nada elegido)
+    // Start of the selection (null = nothing selected)
     public DateTime? SelectedSlot { get; private set; }
     public int SelectedSlotCount { get; private set; }
-    // Fin de la selección = inicio + casillas elegidas
+    // End of the selection = start + selected slots
     public DateTime? SelectedEnd => SelectedSlot?.AddMinutes(SelectedSlotCount * slotMinutes);
 
     static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
@@ -91,13 +91,22 @@ public class ReservationTimeline : MonoBehaviour
 
     void Start()
     {
-        // Si ReservationPanel ya la construyó al abrirse, no se repite
+        // If ReservationPanel already built it when opening, don't build it again
         if (!built) Build();
     }
 
     public void Build()
     {
         built = true;
+
+        // When entering from MainMenu, the random hours use its settings (same in both scenes)
+        HeadsetSession session = HeadsetSession.Instance;
+        if (session != null)
+        {
+            randomDemoData = session.randomDemoData;
+            randomOccupiedChance = session.randomOccupiedChance;
+        }
+
         Clear(dayColumn);
         Clear(gridContent);
         freeCells.Clear();
@@ -114,10 +123,10 @@ public class ReservationTimeline : MonoBehaviour
         SetupVertical(dayColumn);
         SetupVertical(gridContent);
 
-        // Esquina vacía arriba de los días, para alinear con la fila de horas
+        // Empty corner above the days, to line up with the hours row
         CreateSpacer(dayColumn, dayColumnWidth, headerHeight);
 
-        // Fila de horas
+        // Hours row
         RectTransform header = CreateRow(gridContent, "HourRow");
         foreach (TimeSpan time in times)
         {
@@ -127,7 +136,7 @@ public class ReservationTimeline : MonoBehaviour
             if (fitToHeight) SetFontSize(label, cellSize.y * hourFontRatio);
         }
 
-        // Una fila por día
+        // One row per day
         foreach (DateTime day in days)
         {
             TMP_Text dayLabel = Instantiate(dayLabelPrefab, dayColumn);
@@ -139,10 +148,10 @@ public class ReservationTimeline : MonoBehaviour
             foreach (TimeSpan time in times)
             {
                 DateTime slot = day.Date + time;
-                // Las horas que ya pasaron se marcan como ocupadas
+                // Hours that already passed are marked as occupied
                 bool past = slot.AddMinutes(slotMinutes) <= now;
-                // Si el visor está reservado o prestado, desde ahora hasta que se libere
-                bool busy = busyUntil.HasValue && slot < busyUntil.Value;
+                // Times this headset already has booked
+                bool busy = headset != null && headset.IsBooked(slot, slot.AddMinutes(slotMinutes));
                 bool occupied = past || busy || IsOccupied(slot);
 
                 Button cell = Instantiate(cellPrefab, row);
@@ -151,7 +160,7 @@ public class ReservationTimeline : MonoBehaviour
                 cell.image.color = occupied ? occupiedColor : freeColor;
                 cell.interactable = !occupied;
 
-                // Que una celda desactivada no se vea gris por Unity
+                // So Unity doesn't tint disabled cells gray
                 ColorBlock colors = cell.colors;
                 colors.disabledColor = Color.white;
                 cell.colors = colors;
@@ -164,7 +173,7 @@ public class ReservationTimeline : MonoBehaviour
             }
         }
 
-        // Fija el ancho de la columna de días para que el layout del panel no la aplaste
+        // Fix the days column width so the panel layout doesn't squash it
         LayoutElement dayColumnLayout = dayColumn.GetComponent<LayoutElement>();
         if (dayColumnLayout == null) dayColumnLayout = dayColumn.gameObject.AddComponent<LayoutElement>();
         dayColumnLayout.minWidth = dayColumnLayout.preferredWidth = dayColumnWidth;
@@ -173,19 +182,19 @@ public class ReservationTimeline : MonoBehaviour
 
         FitScrollViewWidth();
 
-        // Acomoda todo el panel ya, sin esperar al siguiente frame
+        // Lay out the whole panel now, without waiting for the next frame
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
 
         if (scrollToCurrentTime)
         {
             int column = times.IndexOf(currentSlot);
             ScrollToColumn(column);
-            // Se repite un frame después, cuando Unity ya terminó de acomodar el layout
+            // Repeated one frame later, once Unity has finished the layout
             if (isActiveAndEnabled) StartCoroutine(ScrollNextFrame(column));
         }
     }
 
-    // El ScrollView ocupa exactamente lo que sobra del panel después de la columna de días
+    // The ScrollView takes exactly the space left in the panel after the days column
     void FitScrollViewWidth()
     {
         RectTransform viewport = gridContent.parent as RectTransform;
@@ -207,7 +216,7 @@ public class ReservationTimeline : MonoBehaviour
         ScrollToColumn(column);
     }
 
-    // Primer día y la columna de la hora actual (redondeada hacia abajo al bloque)
+    // First day (always today) and the current time column (rounded down to the slot)
     void GetStart(DateTime now, out DateTime firstDay, out TimeSpan currentSlot)
     {
         int minutes = (int)now.TimeOfDay.TotalMinutes;
@@ -219,12 +228,10 @@ public class ReservationTimeline : MonoBehaviour
         if (currentSlot < TimeSpan.FromHours(openHour))
             currentSlot = TimeSpan.FromHours(openHour);
 
-        // Si ya cerró, empieza mañana a la hora de apertura
-        if (currentSlot >= TimeSpan.FromHours(closeHour))
-        {
-            firstDay = firstDay.AddDays(1);
-            currentSlot = TimeSpan.FromHours(openHour);
-        }
+        // If it's already closed, stay on today's last column (all of today shows in red)
+        TimeSpan lastSlot = TimeSpan.FromHours(closeHour) - TimeSpan.FromMinutes(slotMinutes);
+        if (currentSlot > lastSlot)
+            currentSlot = lastSlot;
     }
 
     void ScrollToColumn(int column)
@@ -237,7 +244,7 @@ public class ReservationTimeline : MonoBehaviour
         float maxScroll = Mathf.Max(0f, gridContent.rect.width - viewport.rect.width);
         float x = Mathf.Min(column * (cellSize.x + spacing), maxScroll);
 
-        // Frena la inercia del ScrollRect para que no regrese la posición
+        // Stop the ScrollRect inertia so it doesn't move the position back
         ScrollRect scrollRect = gridContent.GetComponentInParent<ScrollRect>();
         if (scrollRect != null) scrollRect.StopMovement();
 
@@ -253,13 +260,14 @@ public class ReservationTimeline : MonoBehaviour
         while (days.Count < daysToShow)
         {
             bool weekend = day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday;
-            if (!skipWeekends || !weekend) days.Add(day);
+            // Today always shows, even on weekends
+            if (day == firstDay || !skipWeekends || !weekend) days.Add(day);
             day = day.AddDays(1);
         }
         return days;
     }
 
-    // Todas las columnas del día, de la hora de apertura a la de cierre
+    // Every column of the day, from opening to closing time
     List<TimeSpan> GetTimes()
     {
         List<TimeSpan> times = new List<TimeSpan>();
@@ -282,7 +290,7 @@ public class ReservationTimeline : MonoBehaviour
 
         if (randomDemoData)
         {
-            // Mismo resultado para la misma celda cada vez que se construye
+            // Same result for the same cell every time it's built
             uint h = (uint)(slot.Ticks / TimeSpan.TicksPerMinute) ^ (uint)randomSeed;
             h ^= h >> 16; h *= 0x7feb352du; h ^= h >> 15; h *= 0x846ca68bu; h ^= h >> 16;
             return (h % 1000) / 1000f < randomOccupiedChance;
@@ -291,10 +299,10 @@ public class ReservationTimeline : MonoBehaviour
         return false;
     }
 
-    // Reglas de selección (siempre en el mismo día y casillas seguidas):
-    // - Click junto a la selección: la extiende, hasta maxSelectedSlots
-    // - Click en un extremo de la selección: lo quita
-    // - Click en otro lugar (u otro día): empieza una selección nueva ahí
+    // Selection rules (always the same day and consecutive slots):
+    // - Click next to the selection: extends it, up to maxSelectedSlots
+    // - Click on an end of the selection: removes it
+    // - Click anywhere else (or another day): starts a new selection there
     void OnCellClicked(DateTime slot)
     {
         if (!SelectedSlot.HasValue || SelectedSlot.Value.Date != slot.Date)
@@ -340,7 +348,7 @@ public class ReservationTimeline : MonoBehaviour
         PaintSelection(selectedColor);
 
         if (SelectedSlot.HasValue)
-            Debug.Log($"Seleccionado: {SelectedSlot.Value.ToString("dddd d, HH:mm", English)} - {SelectedEnd.Value:HH:mm}");
+            Debug.Log($"Selected: {SelectedSlot.Value.ToString("dddd d, HH:mm", English)} - {SelectedEnd.Value:HH:mm}");
         OnSelectionChanged?.Invoke();
     }
 
@@ -352,9 +360,9 @@ public class ReservationTimeline : MonoBehaviour
                 cell.image.color = color;
     }
 
-    // --- Helpers de layout ---
+    // --- Layout helpers ---
 
-    // Alto del viewport = encabezado (cell * headerRatio) + filas (cell * rowCount) + espacios
+    // Viewport height = header (cell * headerRatio) + rows (cell * rowCount) + spacing
     void FitToViewport(int rowCount)
     {
         RectTransform viewport = gridContent.parent as RectTransform;
@@ -424,8 +432,8 @@ public class ReservationTimeline : MonoBehaviour
 
     static void Clear(Transform container)
     {
-        // Se sacan del contenedor antes de destruirlos, porque Destroy espera al final del
-        // frame y si no, el layout los seguiría contando al reconstruir
+        // Children are detached before being destroyed, because Destroy waits until the end
+        // of the frame and the layout would otherwise still count them when rebuilding
         for (int i = container.childCount - 1; i >= 0; i--)
         {
             Transform child = container.GetChild(i);

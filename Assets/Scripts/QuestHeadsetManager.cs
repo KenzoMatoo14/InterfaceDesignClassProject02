@@ -4,26 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// Controla todas las tarjetas y los contadores de arriba.
+// Controls all the cards and the counters at the top.
 public class QuestHeadsetManager : MonoBehaviour
 {
-    [Header("Tarjetas (si se deja vacío, toma las hijas de LowerPanel)")]
+    [Header("Cards (if left empty, uses the children of LowerPanel)")]
     public Transform headsetContainer;
     public List<HeadsetCard> headsets = new List<HeadsetCard>();
 
-    [Header("Contadores (si se dejan vacíos, se buscan por nombre)")]
+    [Header("Counters (if left empty, they're found by name)")]
     public TMP_Text availableCount;
     public TMP_Text reservedCount;
     public TMP_Text loanedCount;
     public TMP_Text chargingCount;
     public TMP_Text subtitleText;
 
-    [Header("Reservación (si se deja vacío, se busca en la escena)")]
+    [Header("Reservation (if left empty, it's found in the scene)")]
     public ReservationPanel reservationPanel;
     [Header("Recomendation panel")]
     public RecomendPage recomandationPanel;
 
-    [Header("Color del botón")]
+    [Header("Button color")]
     public Color buttonColor = new Color32(0xE8, 0xC4, 0xC8, 0xFF);
 
     void Start()
@@ -35,7 +35,7 @@ public class QuestHeadsetManager : MonoBehaviour
             card.FindReferences();
             HeadsetCard captured = card;
 
-            // Toda la tarjeta funciona como botón
+            // The whole card works as a button
             Button cardButton = card.GetComponent<Button>();
             if (cardButton == null) cardButton = card.gameObject.AddComponent<Button>();
             cardButton.targetGraphic = card.GetComponent<Image>();
@@ -43,18 +43,26 @@ public class QuestHeadsetManager : MonoBehaviour
             cardButton.onClick.AddListener(() => OpenReservationOrRecomend(captured));
             if (card.actionButton != null)
                 card.actionButton.onClick.AddListener(() => OpenReservationOrRecomend(captured));
-            
-            
         }
 
+        // Always loads the saved data. Resetting the data is controlled from
+        // HeadsetSession in MainMenu, so CaseA and CaseB stay in sync
+        HeadsetDataStore.Load(headsets);
+
         RefreshAll();
+    }
+
+    // Saves status, minutes and booked hours for the next scene or the next Play
+    public void SaveState()
+    {
+        HeadsetDataStore.Save(headsets);
     }
 
     void OpenReservation(HeadsetCard card)
     {
         if (reservationPanel == null)
         {
-            Debug.LogWarning("No hay ReservationPanel. Agrégale el componente a ReservePanel.", this);
+            Debug.LogWarning("No ReservationPanel found. Add the component to ReservePanel.", this);
             return;
         }
         reservationPanel.Open(card);
@@ -63,13 +71,12 @@ public class QuestHeadsetManager : MonoBehaviour
     {
         if (recomandationPanel == null)
         {
-            Debug.LogWarning("No hay RecomendPage asignado.", this);
+            Debug.LogWarning("No RecomendPage assigned.", this);
             return;
         }
 
-        if (headsetContainer != null)
-            headsetContainer.gameObject.SetActive(false);
-
+        // The background cards stay visible; Recomend is already after Background
+        // in the Canvas, so it's drawn on top of them
         recomandationPanel.gameObject.SetActive(true);
     }
 
@@ -81,7 +88,7 @@ public class QuestHeadsetManager : MonoBehaviour
             OpenReservation(card);
     }
 
-    
+
 
     public void RefreshAll()
     {
@@ -90,7 +97,7 @@ public class QuestHeadsetManager : MonoBehaviour
 
         UpdateCounters();
 
-        
+
 
         foreach(HeadsetCard card in headsets){
             Button cbutton = card.GetComponent<Button>();
@@ -102,7 +109,7 @@ public class QuestHeadsetManager : MonoBehaviour
                 colors.highlightedColor = bye;
                 colors.selectedColor = bye;
                 cbutton.colors = colors;
-                
+
             }
             else{
                 ColorBlock colors = cbutton.colors;
@@ -163,12 +170,12 @@ public class QuestHeadsetManager : MonoBehaviour
             if (subtitle != null) subtitleText = subtitle.GetComponent<TMP_Text>();
         }
 
-        // ReservePanel empieza desactivado, por eso se busca incluyendo inactivos
+        // ReservePanel starts disabled, so the search includes inactive objects
         if (reservationPanel == null)
             reservationPanel = FindFirstObjectByType<ReservationPanel>(FindObjectsInactive.Include);
 
         if (headsets.Count == 0)
-            Debug.LogWarning("No se encontraron tarjetas. ¿Les agregaste el componente HeadsetCard?", this);
+            Debug.LogWarning("No cards found. Did you add the HeadsetCard component to them?", this);
     }
 
     TMP_Text FindCounter(string statusObjectName)
@@ -176,7 +183,7 @@ public class QuestHeadsetManager : MonoBehaviour
         GameObject statusObject = GameObject.Find(statusObjectName);
         if (statusObject == null)
         {
-            Debug.LogWarning($"No se encontró '{statusObjectName}'", this);
+            Debug.LogWarning($"'{statusObjectName}' not found", this);
             return null;
         }
 

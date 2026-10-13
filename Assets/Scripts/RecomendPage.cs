@@ -89,7 +89,7 @@ public class RecomendPage : MonoBehaviour
     {
         if (reservationPanel == null)
         {
-            Debug.LogWarning("No hay ReservationPanel. Agrégale el componente a ReservePanel.", this);
+            Debug.LogWarning("No ReservationPanel found. Add the component to ReservePanel.", this);
             return;
         }
         reservationPanel.Open(card);

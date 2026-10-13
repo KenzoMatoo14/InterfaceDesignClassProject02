@@ -302,6 +302,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 713316174}
     - target: {fileID: 725099011866852669, guid: 877cb059b474fa845afe88c467afe543, type: 3}
+      propertyPath: resetValuesAtStart
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 725099011866852669, guid: 877cb059b474fa845afe88c467afe543, type: 3}
       propertyPath: 'headsets.Array.data[0]'
       value: 
       objectReference: {fileID: 1618666336}
@@ -422,7 +426,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 425.67, y: -550}
+  m_AnchoredPosition: {x: 425.665, y: -452.16858}
   m_SizeDelta: {x: 436.985, y: 264.9672}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &68545046
@@ -1175,6 +1179,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7835821753655787484, guid: 058f074cbac7e94418e5a312f49089ce, type: 3}
+      propertyPath: closeHour
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 8104874661846041519, guid: 058f074cbac7e94418e5a312f49089ce, type: 3}
+      propertyPath: confirmationTicket
+      value: 
+      objectReference: {fileID: 1651095861}
     - target: {fileID: 8157760147496653677, guid: 058f074cbac7e94418e5a312f49089ce, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1528,7 +1540,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 425.67, y: -182}
+  m_AnchoredPosition: {x: 425.665, y: -132.4836}
   m_SizeDelta: {x: 436.985, y: 264.9672}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &464363370
@@ -1703,6 +1715,7 @@ GameObject:
   - component: {fileID: 536787311}
   - component: {fileID: 536787313}
   - component: {fileID: 536787312}
+  - component: {fileID: 536787314}
   m_Layer: 5
   m_Name: lowerPanel
   m_TagString: Untagged
@@ -1728,7 +1741,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 425.665, y: -582.99756}
+  m_AnchoredPosition: {x: 362, y: -582.99756}
   m_SizeDelta: {x: 851.33, y: 742.86}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &536787312
@@ -1769,6 +1782,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536787310}
   m_CullTransparentMesh: 1
+--- !u!114 &536787314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536787310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: -103.49
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &620043654
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,7 +1843,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -19}
+  m_AnchoredPosition: {x: 66.48, y: -19}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.50000054}
 --- !u!114 &620043656
@@ -1937,10 +1976,10 @@ RectTransform:
   - {fileID: 536787311}
   m_Father: {fileID: 1652994416}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.3333333, y: 0.12200001}
-  m_AnchorMax: {x: 0.6666666, y: 0.7824723}
-  m_AnchoredPosition: {x: 1, y: 1.309021}
-  m_SizeDelta: {x: -2, y: 2.618}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -63.69098}
+  m_SizeDelta: {x: -300, y: -461.38202}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &713316171
 MonoBehaviour:
@@ -1959,7 +1998,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -2260,7 +2299,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Sorry  there are no more available quest 3 '
+  m_text: 'Sorry there are no more available quest 3 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2657,7 +2696,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 425.665, y: -105.7838}
+  m_AnchoredPosition: {x: 362, y: -105.7838}
   m_SizeDelta: {x: 851.33, y: 211.5676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1088136183
@@ -3872,6 +3911,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4486336889837473415, guid: bb1bb04f8920d084eaeb184033287d52, type: 3}
+      propertyPath: status
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486336889837473415, guid: bb1bb04f8920d084eaeb184033287d52, type: 3}
+      propertyPath: minutesRemaining
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 4577062376475625627, guid: bb1bb04f8920d084eaeb184033287d52, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4712,6 +4759,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3540413909101487708, guid: 63516ff19360f5e44ae0a4c95bc96103, type: 3}
   m_PrefabInstance: {fileID: 1651095859}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1651095861 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 827441133577416118, guid: 63516ff19360f5e44ae0a4c95bc96103, type: 3}
+  m_PrefabInstance: {fileID: 1651095859}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f09fcf16d3f8c1478508cca50164b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConfirmationTicket
 --- !u!1 &1652994412
 GameObject:
   m_ObjectHideFlags: 0

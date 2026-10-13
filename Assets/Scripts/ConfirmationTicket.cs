@@ -4,26 +4,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Va en ConfirmationTicket. Muestra la hora de recogida y de entrega de la reservación,
-// abre el panel de "Send to email" y, al cerrar, aparta el visor y regresa al inicio.
+// Goes on ConfirmationTicket. Shows the reservation's pick-up and return times,
+// opens the "Send to email" panel and, when closed, returns to the main screen.
 public class ConfirmationTicket : MonoBehaviour
 {
-    [Header("Referencias (se llenan solas si se dejan vacías)")]
+    [Header("References (filled automatically if left empty)")]
     public TMP_Text pickUpText;
     public Button closeButton;
     public Button sendToEmailButton;
-    [Tooltip("Panel hermano de ConfirmationTicket dentro del Canvas")]
+    [Tooltip("Sibling panel of ConfirmationTicket inside the Canvas")]
     public GameObject sendToEmailPanel;
     public Button emailCloseButton;
     public QuestHeadsetManager headsetManager;
 
-    [Header("Textos")]
+    [Header("Texts")]
     public string dropOffLocation = "booth x";
 
     static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
 
     bool initialized;
     HeadsetCard reservedHeadset;
+    DateTime pickUpTime;
     DateTime returnBy;
 
     void Initialize()
@@ -35,12 +36,12 @@ public class ConfirmationTicket : MonoBehaviour
         if (closeButton == null) closeButton = FindChild<Button>(transform, "MiddlePanel/XButton");
         if (sendToEmailButton == null) sendToEmailButton = FindChild<Button>(transform, "BottomPanel/SendToEmailButton");
 
-        // transform.Find sí encuentra objetos desactivados
+        // transform.Find does find disabled objects
         if (sendToEmailPanel == null && transform.parent != null)
         {
             Transform panel = transform.parent.Find("SendToEmailPanel");
             if (panel != null) sendToEmailPanel = panel.gameObject;
-            else Debug.LogWarning("No se encontró 'SendToEmailPanel' en el Canvas", this);
+            else Debug.LogWarning("'SendToEmailPanel' not found in the Canvas", this);
         }
         if (emailCloseButton == null && sendToEmailPanel != null)
             emailCloseButton = FindChild<Button>(sendToEmailPanel.transform, "XButton");
@@ -57,7 +58,7 @@ public class ConfirmationTicket : MonoBehaviour
         Transform child = root.Find(path);
         if (child == null)
         {
-            Debug.LogWarning($"[{root.name}] No se encontró el hijo '{path}'", this);
+            Debug.LogWarning($"[{root.name}] Child '{path}' not found", this);
             return null;
         }
         return child.GetComponent<T>();
@@ -67,10 +68,15 @@ public class ConfirmationTicket : MonoBehaviour
     {
         Initialize();
         reservedHeadset = headset;
+        pickUpTime = pickUp;
         returnBy = returnTime;
 
+        // The headset is booked and saved as soon as it's confirmed, so it isn't lost
+        // even if the user leaves through another button (for example Gomainmenu)
+        SaveReservation();
+
         gameObject.SetActive(true);
-        transform.SetAsLastSibling(); // que quede encima de los demás paneles
+        transform.SetAsLastSibling(); // so it stays on top of the other panels
 
         if (pickUpText != null)
         {
@@ -89,8 +95,20 @@ public class ConfirmationTicket : MonoBehaviour
         sendToEmailPanel.transform.SetAsLastSibling();
     }
 
-    // X del ticket o del panel de email: aparta el visor y regresa a la pantalla inicial
+    // X on the ticket or on the email panel: returns to the main screen
     void FinishAndGoHome(){
+        if (headsetManager != null) headsetManager.RefreshAll();
+
+        if (sendToEmailPanel != null) sendToEmailPanel.SetActive(false);
+        gameObject.SetActive(false);
+
+        RecomendPage recomend = FindFirstObjectByType<RecomendPage>();
+        if (recomend != null) recomend.Close();
+    }
+
+    // Sets the headset to Reserved, books the selected block and saves it to the file
+    void SaveReservation()
+    {
         if (reservedHeadset != null)
         {
             float minutes = (float)(returnBy - DateTime.Now).TotalMinutes;
@@ -98,21 +116,21 @@ public class ConfirmationTicket : MonoBehaviour
 
             reservedHeadset.SetStatus(HeadsetStatus.Reserved, finalMinutes);
 
-            
+
             if (reservedHeadset.original != null)
                 reservedHeadset.original.SetStatus(HeadsetStatus.Reserved, finalMinutes);
+
+            // Only the selected block (pick up -> return) is booked, on the real headset
+            reservedHeadset.Source.AddBooking(pickUpTime, returnBy);
 
             reservedHeadset = null;
         }
 
-        if (headsetManager != null) headsetManager.RefreshAll();
-
-        if (sendToEmailPanel != null) sendToEmailPanel.SetActive(false);
-        gameObject.SetActive(false);
-
-
-        RecomendPage recomend = FindFirstObjectByType<RecomendPage>();
-        if (recomend != null) recomend.Close();
+        if (headsetManager != null)
+        {
+            headsetManager.RefreshAll();
+            headsetManager.SaveState();
+        }
     }
 
     // "6:00 pm today", "7:30 pm tomorrow", "9:00 am Mon 12"

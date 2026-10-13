@@ -2253,6 +2253,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7835821753655787484, guid: 058f074cbac7e94418e5a312f49089ce, type: 3}
+      propertyPath: closeHour
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 7835821753655787484, guid: 058f074cbac7e94418e5a312f49089ce, type: 3}
+      propertyPath: randomOccupiedChance
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 8104874661846041519, guid: 058f074cbac7e94418e5a312f49089ce, type: 3}
       propertyPath: confirmationTicket
       value: 

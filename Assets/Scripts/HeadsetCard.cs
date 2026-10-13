@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,24 +12,36 @@ public enum HeadsetStatus
     Charging
 }
 
-// Va en cada tarjeta (Headset1..Headset6). Guarda el estado del visor y actualiza sus textos.
+// Goes on each card (Headset1..Headset6). Stores the headset state and updates its texts.
 public class HeadsetCard : MonoBehaviour
 {
     [HideInInspector] public HeadsetCard original;
-    [Header("Estado inicial")]
-    [Tooltip("Si se deja vacío, usa el texto que ya tiene QuestName")]
+    [Header("Initial state")]
+    [Tooltip("If left empty, uses the text QuestName already has")]
     public string headsetName = "";
     public HeadsetStatus status = HeadsetStatus.Available;
-    [Tooltip("Minutos que faltan para que esté disponible")]
+    [Tooltip("Minutes left until it becomes available")]
     public float minutesRemaining = 0f;
 
-    [Header("Referencias (se llenan solas si se dejan vacías)")]
+    [Header("References (filled automatically if left empty)")]
     public TMP_Text nameText;
     public TMP_Text statusText;
     public TMP_Text readyToUseText;
     public Button actionButton;
     public Image buttonImage;
     public TMP_Text buttonText;
+
+    public struct Booking
+    {
+        public DateTime start;
+        public DateTime end;
+    }
+
+    // Times booked for this headset (the ones shown in red on the timeline)
+    [NonSerialized] public List<Booking> bookings = new List<Booking>();
+
+    // Cards on the recommendation panel are copies; the real data lives in 'original'
+    public HeadsetCard Source => original != null ? original : this;
 
     void Reset()
     {
@@ -46,7 +60,7 @@ public class HeadsetCard : MonoBehaviour
         if (string.IsNullOrEmpty(headsetName) && nameText != null)
             headsetName = nameText.text;
 
-        // Que el botón desactivado conserve el color que le pongamos (si no, Unity lo pinta gris)
+        // Keep the color we set when the button is disabled (otherwise Unity tints it gray)
         if (actionButton != null)
         {
             ColorBlock colors = actionButton.colors;
@@ -60,7 +74,7 @@ public class HeadsetCard : MonoBehaviour
         Transform child = transform.Find(path);
         if (child == null)
         {
-            Debug.LogWarning($"[{name}] No se encontró el hijo '{path}'", this);
+            Debug.LogWarning($"[{name}] Child '{path}' not found", this);
             return null;
         }
         return child.GetComponent<T>();
@@ -69,11 +83,34 @@ public class HeadsetCard : MonoBehaviour
     public void SetStatus(HeadsetStatus newStatus, float minutes)
     {
         status = newStatus;
-        
+
         minutesRemaining = newStatus == HeadsetStatus.Available ? 0f : minutes;
     }
 
-    // Llamado por el manager para redibujar la tarjeta
+    // Turns the Inspector state into a booked block: from now until it becomes free
+    public void InitBookings()
+    {
+        bookings.Clear();
+        if (status != HeadsetStatus.Available)
+        {
+            DateTime now = DateTime.Now;
+            AddBooking(now, now.AddMinutes(Mathf.Max(1f, minutesRemaining)));
+        }
+    }
+
+    public void AddBooking(DateTime start, DateTime end)
+    {
+        bookings.Add(new Booking { start = start, end = end });
+    }
+
+    public bool IsBooked(DateTime slotStart, DateTime slotEnd)
+    {
+        foreach (Booking booking in bookings)
+            if (slotStart < booking.end && slotEnd > booking.start) return true;
+        return false;
+    }
+
+    // Called by the manager to redraw the card
     public void Refresh(Color buttonColor)
     {
         int minutesToShow = Mathf.CeilToInt(minutesRemaining);
