@@ -12,6 +12,7 @@ public static class HeadsetDataStore
     {
         public long start; // DateTime.Ticks (JsonUtility can't save DateTime)
         public long end;
+        public HeadsetStatus status;
     }
 
     [Serializable]
@@ -43,7 +44,7 @@ public static class HeadsetDataStore
                 minutesRemaining = card.minutesRemaining
             };
             foreach (HeadsetCard.Booking booking in card.bookings)
-                headset.bookings.Add(new BookingData { start = booking.start.Ticks, end = booking.end.Ticks });
+                headset.bookings.Add(new BookingData { start = booking.start.Ticks, end = booking.end.Ticks, status = booking.status });
             data.headsets.Add(headset);
         }
 
@@ -104,7 +105,7 @@ public static class HeadsetDataStore
             card.SetStatus(headset.status, headset.minutesRemaining);
             card.bookings.Clear();
             foreach (BookingData booking in headset.bookings)
-                card.AddBooking(new DateTime(booking.start), new DateTime(booking.end));
+                card.AddBooking(new DateTime(booking.start), new DateTime(booking.end), booking.status);
         }
 
         if (missing) Save(cards);
