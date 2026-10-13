@@ -14,7 +14,7 @@ Users need to identify which kits are available before attempting to borrow one.
 
 ### HCI Principle
 
-Visibility of System Status
+**Visibility of System Status**
 
 The interface follows the principle of visibility of system status by showing the current status of each Quest headset. Users can quickly see which headsets are available, reserved, loaned, or charging before making a selection.
 
@@ -34,19 +34,24 @@ This design helps users understand the current inventory at a glance and reduces
 
 ### User Problem
 
-Users may need to correct or change their selections before confirming a loan. If the interface does not allow them to review and edit their choices, they may have to repeat previous steps or lose valid information.
+Users may need to correct or change their selections before confirming a loan. If the interface does not allow them to review and edit their choices, they may have to repeat previous steps or lose valid information. Additionally, when no headsets are available, users need to understand the situation and know what alternatives they can choose.
 
 ### HCI Principle
 
-[Insert the HCI principle that best describes the implemented design.]
+**User Control and Freedom**
+
+This principle allows users to review their options and make decisions before confirming an action. It also supports giving users a clear way to choose an alternative when their original choice is no longer available.
 
 ### Design Solution
 
-[Explain how users review their choices, edit them, and preserve valid information.]
+The interface displays a message when there are no more available Quest headsets, explaining the situation and directing users to the next available options. A pop-up shows alternative headsets, their current loan status, and the estimated time until they become available. Users can review these options and select one before pressing the "Confirm selection" button.
+
+This design helps users understand why they cannot continue with their original choice and gives them an alternative instead of leaving them at a dead end. Showing the status and remaining time of each headset also helps users make an informed decision before confirming their selection.
 
 ### Evidence
 
-[Insert a screenshot of the actual review or editing interface.]
+<img width="515" height="688" alt="Screenshot 2026-10-12 at 7 07 55 PM" src="https://github.com/user-attachments/assets/6ad02a01-24ac-4dbe-9587-1d118ac23289" />
+
 
 ## 4. Interaction Decision 3: No Kits Available
 
