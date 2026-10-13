@@ -11,24 +11,20 @@ AI was used as a support tool. Team members remain responsible for understanding
 ### Team Member 1
 
 **Name:** Kenzo Matoo López
-**Main contribution:** [Describe your main responsibility in the project]
+**Main contribution:** Implementation of the Quest Headset Manager interface in Unity (UI screens and interaction logic).
 
-#### AI Use Record 1
-
-* **AI tool:** [ChatGPT, GitHub Copilot, Claude, etc.]
-* **Date used:** [YYYY-MM-DD]
-* **Purpose:** [What were you trying to accomplish?]
-* **Prompt or request:** [Copy the prompt or summarize what you asked the tool]
-* **AI response used:** [Describe the code, explanation, suggestion, or other output you used]
-* **Changes made:** [Explain what you modified or adapted before using the result]
-* **Verification:** [Explain how you checked that the result worked correctly]
-* **Related project files or work:** [File names, scripts, scenes, documentation, or other relevant work]
+* **AI tool:** Claude (Claude Code, Opus 5.5 model, Claude desktop app)
+* **Date used:** 2026-10-04 to 2026-10-10
+* **Purpose:** Get help implementing my UI design in Unity and programming its interaction logic.
+* **Prompt or request:** I asked step by step how to set up the Canvas at my design's dimensions, for scripts to manage the headset statuses, for a timeline to select reservation times generated from the current date and time, and for the flow between screens (reservation panel → confirmation ticket → send to email → back to the main screen). I also sent screenshots of visual bugs and asked for fixes.
+* **AI response used:** Guidance for the Canvas Scaler, Game view resolution and UI styling. C# scripts: `QuestHeadsetManager.cs` and `HeadsetCard.cs` (headset statuses and counters), `ReservationTimeline.cs` (day × time grid generated at runtime, with selection of up to 3 consecutive 30-minute slots), `ReservationPanel.cs` (shows the selected headset's data) and `ConfirmationTicket.cs` (pick-up and return times, send-to-email panel, and updating the headset to Reserved). It also diagnosed layout problems by reading my scene file.
+* **Changes made:** I built the scene hierarchy and prefabs in the Unity Editor and configured the components and values in the Inspector. I defined the behavior rules: always-pink buttons, no countdown timer, past hours in red, a maximum of 90 minutes per reservation.
+* **Verification:** Claude could not run Unity, so I tested every change myself in Play mode. When something failed (the timeline overflowing the panel, the layout breaking when switching headsets, a booking marking too many hours as occupied), I reported it with screenshots and asked for corrections until the full flow worked as designed.
+* **Related project files or work:** `Assets/Scripts/` (the 5 scripts above), `Assets/Prefabs/` (Cell, HourLabel, DayLabel), `Assets/Scenes/MainScene.unity`
 
 #### Additional AI Use
 
-[Add another AI Use Record for each significant use of AI. If you did not use AI, explicitly state that.]
-
----
+No additional AI use. All AI assistance for my part of the project is summarized in AI Use Record 1.
 
 ### Team Member 2
 
@@ -50,7 +46,6 @@ AI was used as a support tool. Team members remain responsible for understanding
 
 [Add another AI Use Record for each significant use of AI. If you did not use AI, explicitly state that.]
 
----
 
 ### Team Member 3
 
@@ -72,7 +67,6 @@ AI was used as a support tool. Team members remain responsible for understanding
 
 [Add another AI Use Record for each significant use of AI. If you did not use AI, explicitly state that.]
 
----
 
 ## 3. General Notes
 
