@@ -20,7 +20,7 @@ AI was used as a support tool. Team members remain responsible for understanding
 * **AI response used:** Guidance for the Canvas Scaler, Game view resolution and UI styling. C# scripts: `QuestHeadsetManager.cs` and `HeadsetCard.cs` (headset statuses and counters), `ReservationTimeline.cs` (day × time grid generated at runtime, with selection of up to 3 consecutive 30-minute slots), `ReservationPanel.cs` (shows the selected headset's data) and `ConfirmationTicket.cs` (pick-up and return times, send-to-email panel, and updating the headset to Reserved). It also diagnosed layout problems by reading my scene file.
 * **Changes made:** I built the scene hierarchy and prefabs in the Unity Editor and configured the components and values in the Inspector. I defined the behavior rules: always-pink buttons, no countdown timer, past hours in red, a maximum of 90 minutes per reservation.
 * **Verification:** Claude could not run Unity, so I tested every change myself in Play mode. When something failed (the timeline overflowing the panel, the layout breaking when switching headsets, a booking marking too many hours as occupied), I reported it with screenshots and asked for corrections until the full flow worked as designed.
-* **Related project files or work:** `Assets/Scripts/` (the 5 scripts above), `Assets/Prefabs/` (Cell, HourLabel, DayLabel), `Assets/Scenes/MainScene.unity`
+* **Related project files or work:** `Assets/Scripts/` (the 5 scripts above), `Assets/Prefabs/` (Cell, HourLabel, DayLabel), `Assets/Scenes/MainMenu.unity`, `Assets/Scenes/CaseA.unity`, `Assets/Scenes/CaseB.unity`
 
 #### Additional AI Use
 
@@ -29,22 +29,22 @@ No additional AI use. All AI assistance for my part of the project is summarized
 ### Team Member 2
 
 **Name:** Alberto Stephen Dubin Hernández
-**Main contribution:** [Describe your main responsibility in the project]
+**Main contribution:** [PENDING – describe your main responsibility in the project]
 
 #### AI Use Record 1
 
-* **AI tool:** [ChatGPT, GitHub Copilot, Claude, etc.]
-* **Date used:** [YYYY-MM-DD]
-* **Purpose:** [What were you trying to accomplish?]
-* **Prompt or request:** [Copy the prompt or summarize what you asked the tool]
-* **AI response used:** [Describe the code, explanation, suggestion, or other output you used]
-* **Changes made:** [Explain what you modified or adapted before using the result]
-* **Verification:** [Explain how you checked that the result worked correctly]
-* **Related project files or work:** [File names, scripts, scenes, documentation, or other relevant work]
+* **AI tool:** [PENDING – ChatGPT, GitHub Copilot, Claude, etc.]
+* **Date used:** [PENDING – YYYY-MM-DD]
+* **Purpose:** [PENDING – What were you trying to accomplish?]
+* **Prompt or request:** [PENDING – Copy the prompt or summarize what you asked the tool]
+* **AI response used:** [PENDING – Describe the code, explanation, suggestion, or other output you used]
+* **Changes made:** [PENDING – Explain what you modified or adapted before using the result]
+* **Verification:** [PENDING – Explain how you checked that the result worked correctly]
+* **Related project files or work:** [PENDING – File names, scripts, scenes, documentation, or other relevant work]
 
 #### Additional AI Use
 
-[Add another AI Use Record for each significant use of AI. If you did not use AI, explicitly state that.]
+[PENDING – Add another AI Use Record for each significant use of AI. If you did not use AI, explicitly state that.]
 
 
 ### Team Member 3
@@ -66,7 +66,7 @@ No additional AI use. All AI assistance for my part of the project is summarized
 
 #### Additional AI Use
 
-No additional AI tools were used for my project contribution. My use of AI was limited to assistance with documentation and organizing the required deliverables. I did not use AI to generate or modify the Unity implementation or to perform the project's functional tests.
+No additional AI tools were used for my project contribution. My use of AI was limited to assistance with documentation and organizing the required deliverables (AI Use Records 1 and 2). I did not use AI to generate or modify the Unity implementation or to perform the project's functional tests.
 
 
 ## 3. General Notes
