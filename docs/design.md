@@ -50,7 +50,7 @@ This design helps users understand why they cannot continue with their original 
 
 ### Evidence
 
-<img width="515" height="688" alt="Screenshot 2026-10-12 at 7 07 55 PM" src="https://github.com/user-attachments/assets/6ad02a01-24ac-4dbe-9587-1d118ac23289" />
+<img width="515" height="688" alt="Screenshot 2026-10-12 at 7 07 55 PM" src="https://github.com/user-attachments/assets/6ad02a01-24ac-4dbe-9587-1d118ac23289" />
 
 
 ## 4. Interaction Decision 3: Preventing Invalid Kit Selection
@@ -83,9 +83,9 @@ The original Figma design served as the visual and interaction reference for the
 
 ## Main Differences
 
-**Functional headset status:** The Unity implementation displays six headset cards with their current statuses: available, reserved, loaned, or charging. It also includes a summary at the top showing the number of headsets in each category.
-**Interactive availability options:** The Unity version connects the headset cards to the checkout flow. The available headset displays a "Start" button, while unavailable headsets display their current status and relevant time information.
-**No-availability feedback:** The implementation includes a message that appears when no headsets are available. It presents alternative headsets, their loan status, estimated availability times, and a "Confirm selection" button to give users a possible next step.
+* **Functional headset status:** The Unity implementation displays six headset cards with their current statuses: available, reserved, loaned, or charging. It also includes a summary at the top showing the number of headsets in each category.
+* **Interactive availability options:** The Unity version connects the headset cards to the checkout flow. The available headset displays a "Start" button, while unavailable headsets display their current status and relevant time information.
+* **No-availability feedback:** The implementation includes a message that appears when no headsets are available. It presents alternative headsets, their loan status, estimated availability times, and a "Confirm selection" button to give users a possible next step.
 
 ### Reasons for the Changes
 
@@ -93,13 +93,25 @@ These changes support the functional requirements of the project and make the in
 
 Connecting the cards to the checkout flow helps prevent users from attempting to borrow unavailable headsets. The no-availability message also provides feedback when the user's original choice cannot be fulfilled and presents alternatives instead of leaving the user without a clear next step.
 
-These decisions support the HCI principles of visibility of system status, error prevention, and user control and freedom. The implementation must also be tested to verify that unavailable headsets cannot be selected incorrectly and that confirming an alternative works as intended.
+These decisions support the HCI principles of visibility of system status, error prevention, and user control and freedom. The changes were verified with the functional tests (T1–T6) and the external usability tests documented in [`testing.md`](testing.md), which check that unavailable headsets cannot be selected incorrectly and that confirming an alternative works as intended.
 
 
 ## 6. Usability-Based Improvements
 
-[Describe any relevant changes made after usability testing. Explain the observed problem, the implemented solution, and the evidence supporting the change.]
+Three participants outside the team tested both scenarios without step-by-step guidance. Two problems found in those sessions were fixed and retested; the full before-and-after evidence is in [`testing.md`](testing.md).
+
+### Improvement 1: [PENDING – short title of the fix]
+
+* **Observed problem:** [PENDING – what the participant(s) did or misunderstood, and which HCI principle it affected]
+* **Implemented solution:** [PENDING – what changed in the Unity interface]
+* **Evidence:** [PENDING – before/after screenshots and the result of the retest]
+
+### Improvement 2: [PENDING – short title of the fix]
+
+* **Observed problem:** [PENDING – what the participant(s) did or misunderstood, and which HCI principle it affected]
+* **Implemented solution:** [PENDING – what changed in the Unity interface]
+* **Evidence:** [PENDING – before/after screenshots and the result of the retest]
 
 ## 7. Conclusion
 
-The design decisions aim to make the borrowing process understandable and to help users complete their tasks with fewer errors. The final evaluation of these decisions will be supported by the implemented interface and the usability testing results documented in `docs/testing.md`.
+The design decisions aim to make the borrowing process understandable and to help users complete their tasks with fewer errors. The final evaluation of these decisions is supported by the implemented interface and the usability testing results documented in `docs/testing.md`.
