@@ -50,22 +50,23 @@ No additional AI use. All AI assistance for my part of the project is summarized
 ### Team Member 3
 
 **Name:** Fátima Sofía Walls Fernández
-**Main contribution:** [Describe your main responsibility in the project]
+
+**Main contribution:** Project documentation, including the README, design justification, testing documentation, video organization, AI use declaration, and coordination of the documentation deliverables.
 
 #### AI Use Record 1
 
-* **AI tool:** [ChatGPT, GitHub Copilot, Claude, etc.]
-* **Date used:** [YYYY-MM-DD]
-* **Purpose:** [What were you trying to accomplish?]
-* **Prompt or request:** [Copy the prompt or summarize what you asked the tool]
-* **AI response used:** [Describe the code, explanation, suggestion, or other output you used]
-* **Changes made:** [Explain what you modified or adapted before using the result]
-* **Verification:** [Explain how you checked that the result worked correctly]
-* **Related project files or work:** [File names, scripts, scenes, documentation, or other relevant work]
+* **AI tool:** ChatGPT (OpenAI)
+* **Date used:** October 11, 2026
+* **Purpose:** To organize and prepare the project documentation required for the HCI Quest Checkout project.
+* **Prompt or request:** Asked ChatGPT for help structuring and drafting the project documentation, including the design justification, testing report, README, and AI use declaration, based on the project requirements.
+* **AI response used:** Used suggestions for organizing the documentation, structuring the required sections, identifying the information needed for the design and testing reports, and preparing documentation templates.
+* **Changes made:** Adapted the suggested structure and content to our project's requirements, the team's responsibilities, and the actual implementation status. Project-specific details and test results were completed based on our team's work.
+* **Verification:** Compared the suggested documentation structure with the project instructions and filled the content to ensure it matched the team's actual work. Implementation details and testing results are documented based on evidence from the project rather than assumed.
+* **Related project files or work:** `README.md`, `docs/design.md`, `docs/testing.md`, and `docs/ai-use.md`.
 
 #### Additional AI Use
 
-[Add another AI Use Record for each significant use of AI. If you did not use AI, explicitly state that.]
+No additional AI tools were used for my project contribution. My use of AI was limited to assistance with documentation and organizing the required deliverables. I did not use AI to generate or modify the Unity implementation or to perform the project's functional tests.
 
 
 ## 3. General Notes
