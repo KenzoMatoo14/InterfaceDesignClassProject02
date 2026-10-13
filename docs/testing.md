@@ -162,31 +162,20 @@ Three participants outside the team attempted Scenario A and Scenario B without 
 
 ## 4. Usability Problem 1
 
-**Observed problem:** [PENDING – what happened during testing, which participant(s)]
+**Observed problem:** During Scenario A, Participant #2 struggled to select the desired time for the reservation (50 seconds, the longest time in that scenario). After the participant selected a time slot and tried to choose a different one, all the slots on the timeline turned red, as if every time were occupied. The participant could not tell which times were really available or change the selection easily. The participant completed the task without help.
 
-**Evidence before the change:** [PENDING – screenshot and observation]
+**Evidence before the change:** Observation: after the first selection, selecting another slot made the whole timeline appear occupied, which went against visibility of system status and user control and freedom.
 
-**Implemented improvement:** [PENDING – the change made in Unity]
+<img width="626" height="358" alt="IMG_7728" src="https://github.com/user-attachments/assets/b7cdb766-923b-4fdf-bd96-fbaff1fa8f7d" />
 
-**Retest procedure:** [PENDING – how the improved version was tested]
 
-**Result after the change:** [PENDING]
+**Implemented improvement:** We fixed the selection logic of the reservation timeline so that the user's progress is kept when choosing another time, and only the time slots that are really occupied are shown in red. Free slots stay selectable, so the user can change the selection without losing progress.
 
-**Evidence after the change:** [PENDING – screenshot and observation]
+**Retest procedure:** We opened the reservation panel of the available headset, selected a time slot, and then selected a different slot (on the same day and on another day). We repeated this several times, editing the selection by extending, shortening and moving it, and checked that only the slots that were actually occupied or in the past appeared in red.
 
-## 5. Usability Problem 2
+**Result after the change:** The selection can now be changed as many times as needed.
 
-**Observed problem:** [PENDING – what happened during testing, which participant(s)]
-
-**Evidence before the change:** [PENDING – screenshot and observation]
-
-**Implemented improvement:** [PENDING – the change made in Unity]
-
-**Retest procedure:** [PENDING – how the improved version was tested]
-
-**Result after the change:** [PENDING]
-
-**Evidence after the change:** [PENDING – screenshot and observation]
+<img width="447" height="590" alt="Screenshot 2026-10-12 at 10 51 44 PM" src="https://github.com/user-attachments/assets/7a8c9cc3-8925-485c-a24d-5a0718518db0" />
 
 ## 6. Limitations and Unresolved Issues
 
