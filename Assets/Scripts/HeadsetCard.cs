@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +29,15 @@ public class HeadsetCard : MonoBehaviour
     public Button actionButton;
     public Image buttonImage;
     public TMP_Text buttonText;
+
+    public struct Booking
+    {
+        public DateTime start;
+        public DateTime end;
+    }
+
+    // Horarios apartados de este visor (los que salen en rojo en la timeline)
+    [NonSerialized] public List<Booking> bookings = new List<Booking>();
 
     void Reset()
     {
@@ -69,6 +80,30 @@ public class HeadsetCard : MonoBehaviour
     {
         status = newStatus;
         minutesRemaining = newStatus == HeadsetStatus.Available ? 0f : minutes;
+    }
+
+    // Convierte el estado inicial en un bloque ocupado: desde ahora hasta que se libere.
+    // Lo llama el manager al iniciar.
+    public void InitBookings()
+    {
+        bookings.Clear();
+        if (status != HeadsetStatus.Available)
+        {
+            DateTime now = DateTime.Now;
+            AddBooking(now, now.AddMinutes(Mathf.Max(1f, minutesRemaining)));
+        }
+    }
+
+    public void AddBooking(DateTime start, DateTime end)
+    {
+        bookings.Add(new Booking { start = start, end = end });
+    }
+
+    public bool IsBooked(DateTime slotStart, DateTime slotEnd)
+    {
+        foreach (Booking booking in bookings)
+            if (slotStart < booking.end && slotEnd > booking.start) return true;
+        return false;
     }
 
     // Llamado por el manager para redibujar la tarjeta

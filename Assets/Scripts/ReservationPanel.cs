@@ -105,12 +105,7 @@ public class ReservationPanel : MonoBehaviour
         {
             timeline.randomSeed = baseSeed + number * 7919;
 
-            // Reserved, Loaned o Charging: ocupado desde ahora hasta que termine su tiempo
-            // (mínimo 1 minuto, para que al menos la hora actual salga en rojo)
-            if (card.status == HeadsetStatus.Available)
-                timeline.busyUntil = null;
-            else
-                timeline.busyUntil = DateTime.Now.AddMinutes(Mathf.Max(1f, card.minutesRemaining));
+            timeline.headset = card;
 
             timeline.Build();
         }

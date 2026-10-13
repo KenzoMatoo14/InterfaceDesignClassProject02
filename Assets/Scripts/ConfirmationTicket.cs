@@ -24,6 +24,7 @@ public class ConfirmationTicket : MonoBehaviour
 
     bool initialized;
     HeadsetCard reservedHeadset;
+    DateTime pickUpTime;
     DateTime returnBy;
 
     void Initialize()
@@ -67,6 +68,7 @@ public class ConfirmationTicket : MonoBehaviour
     {
         Initialize();
         reservedHeadset = headset;
+        pickUpTime = pickUp;
         returnBy = returnTime;
 
         gameObject.SetActive(true);
@@ -94,6 +96,9 @@ public class ConfirmationTicket : MonoBehaviour
     {
         if (reservedHeadset != null)
         {
+            // Solo se aparta el bloque elegido (pick up -> return), no desde ahora
+            reservedHeadset.AddBooking(pickUpTime, returnBy);
+
             // "Ready to use in" = minutos que faltan para que lo devuelvan
             float minutes = (float)(returnBy - DateTime.Now).TotalMinutes;
             reservedHeadset.SetStatus(HeadsetStatus.Reserved, Mathf.Max(1f, minutes));

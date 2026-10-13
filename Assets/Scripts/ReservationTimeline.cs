@@ -70,8 +70,8 @@ public class ReservationTimeline : MonoBehaviour
     [Range(0f, 1f)] public float randomOccupiedChance = 0.2f;
     public int randomSeed = 1234;
 
-    // Hasta cuándo está ocupado el visor actual (null = libre). Lo pone ReservationPanel.
-    [NonSerialized] public DateTime? busyUntil;
+    // Visor que se está mostrando; sus horarios apartados salen en rojo. Lo pone ReservationPanel.
+    [NonSerialized] public HeadsetCard headset;
 
     [Header("Selección")]
     [Tooltip("Máximo de casillas seguidas que se pueden elegir (3 x 30 min = 90 min)")]
@@ -141,8 +141,8 @@ public class ReservationTimeline : MonoBehaviour
                 DateTime slot = day.Date + time;
                 // Las horas que ya pasaron se marcan como ocupadas
                 bool past = slot.AddMinutes(slotMinutes) <= now;
-                // Si el visor está reservado o prestado, desde ahora hasta que se libere
-                bool busy = busyUntil.HasValue && slot < busyUntil.Value;
+                // Horarios que ya tiene apartados este visor
+                bool busy = headset != null && headset.IsBooked(slot, slot.AddMinutes(slotMinutes));
                 bool occupied = past || busy || IsOccupied(slot);
 
                 Button cell = Instantiate(cellPrefab, row);
