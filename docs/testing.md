@@ -111,15 +111,8 @@
 
 Three participants outside the team attempted Scenario A and Scenario B without step-by-step instructions. Participants are identified using anonymous IDs.
 
-For each participant and scenario, record:
+<img width="1164" height="153" alt="External usability test" src="https://github.com/user-attachments/assets/dd903722-07d7-43a6-b624-b29b22b53afa" />
 
-* Task completion
-* Completion time
-* Errors
-* Observations
-* Help required
-
-[Insert the participant results table.]
 
 ## 4. Usability Problem 1
 
