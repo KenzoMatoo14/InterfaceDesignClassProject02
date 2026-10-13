@@ -100,17 +100,11 @@ These decisions support the HCI principles of visibility of system status, error
 
 Three participants outside the team tested both scenarios without step-by-step guidance. Two problems found in those sessions were fixed and retested; the full before-and-after evidence is in [`testing.md`](testing.md).
 
-### Improvement 1: [PENDING – short title of the fix]
+### Improvement 1: Keeping the time selection and showing only occupied slots in red
 
-* **Observed problem:** [PENDING – what the participant(s) did or misunderstood, and which HCI principle it affected]
-* **Implemented solution:** [PENDING – what changed in the Unity interface]
-* **Evidence:** [PENDING – before/after screenshots and the result of the retest]
-
-### Improvement 2: [PENDING – short title of the fix]
-
-* **Observed problem:** [PENDING – what the participant(s) did or misunderstood, and which HCI principle it affected]
-* **Implemented solution:** [PENDING – what changed in the Unity interface]
-* **Evidence:** [PENDING – before/after screenshots and the result of the retest]
+* **Observed problem:** In Scenario A, Participant #2 struggled to select the desired reservation time. After choosing a time slot and trying to select a different one, all the slots on the timeline turned red, as if every time were occupied. This broke **visibility of system status**, because the timeline no longer showed which times were really available, and **user control and freedom**, because the user could not easily change the selection.
+* **Implemented solution:** We fixed the selection logic of the reservation timeline so that the user's progress is kept when choosing another time. Now only the time slots that are really occupied (or already in the past) are shown in red, and the free slots remain selectable, so the selection can be edited as many times as needed before confirming.
+* **Evidence:** Before the change, the timeline turned fully red after a second selection. After the change, we repeated the same steps (select a slot, then select a different one, on the same day and on another day) and only the truly occupied slots stayed red. The full before-and-after evidence is in [`testing.md`](testing.md), section 4.
 
 ## 7. Conclusion
 
