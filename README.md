@@ -25,7 +25,7 @@ https://www.figma.com/design/5yRzIzVPcyZezECFmFmCy6/Project1_Wireframe?node-id=0
 
 1. Clone this repository.
 2. Open the project using the specified Unity version.
-3. Open the main scene: MainScene
+3. Open the main scene: Main Menu
 4. Run the application from the Unity Editor.
 
 ## Download and Run the Build
